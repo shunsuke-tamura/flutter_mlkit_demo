@@ -1,6 +1,14 @@
+import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
+import 'package:ar_flutter_plugin/datatypes/node_types.dart';
+import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
+import 'package:ar_flutter_plugin/managers/ar_location_manager.dart';
+import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
+import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
+import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mlkit_face_demo/widgets/camera.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,7 +67,28 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const CameraWidget(),
+      body: Center(
+        child: ARView(
+          onARViewCreated: onARViewCreated,
+        ),
+      ),
     );
+  }
+
+  void onARViewCreated(
+      ARSessionManager arSessionManager,
+      ARObjectManager arObjectManager,
+      ARAnchorManager arAnchorManager,
+      ARLocationManager arLocationManager) {
+    arSessionManager.onInitialize();
+    arObjectManager.onInitialize();
+    var node = ARNode(
+        type: NodeType.webGLB,
+        uri:
+            "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+        scale: Vector3(0.02, 0.02, 0.02),
+        position: Vector3(0.0, 0.0, 0.0),
+        rotation: Vector4(1.0, 0.0, 0.0, 0.0));
+    arObjectManager.addNode(node);
   }
 }
