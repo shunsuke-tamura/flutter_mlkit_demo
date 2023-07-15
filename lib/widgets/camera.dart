@@ -31,7 +31,7 @@ class _CameraWidgetState extends State<CameraWidget> {
   @override
   void initState() {
     super.initState();
-    controller = CameraController(cameras[1], ResolutionPreset.max);
+    controller = CameraController(cameras[0], ResolutionPreset.max);
     controller.initialize().then((_) {
       controller.startImageStream(_processCameraImage);
       if (!mounted) {
@@ -84,7 +84,7 @@ class _CameraWidgetState extends State<CameraWidget> {
 
   InputImage? _inputImageFromCameraImage(CameraImage image) {
     // get camera rotation
-    final camera = cameras[1];
+    final camera = cameras[0];
     final sensorOrientation = camera.sensorOrientation;
     var rotation = InputImageRotationValue.fromRawValue(sensorOrientation);
     // print(
@@ -143,7 +143,7 @@ class _CameraWidgetState extends State<CameraWidget> {
         faces,
         inputImage.metadata!.size,
         inputImage.metadata!.rotation,
-        CameraLensDirection.front,
+        CameraLensDirection.back,
       );
       _customPaint = CustomPaint(
         painter: painter,
